@@ -34,13 +34,22 @@
                 {% if item.category == table.id and page.subject == item.subject and page.level == item.level %}
                     <tr>
                         {% for col in table.cols %}
-                            {% assign heading_value = item[col.heading] %}
+                            {% assign heading_key = col.heading %}
+                            {% assign heading_value = item[heading_key] %}
                             <td {% if forloop.index0 == 0 %}style="font-weight: bold;"{% endif %}>
                                 {% if heading_value %}
-                                    {% if heading_value.url and heading_value.link_text %}
-                                        <a href="{{ heading_value.url }}" class="link-primary" style="text-decoration: none;">{{ heading_value.link_text }} <i class="bi bi-file-pdf"></i></a>
+                                    {% if heading_value.first %}
+                                        {% for file in heading_value %}
+                                            {% if file.url and file.link_text %}
+                                                <a href="{{ file.url }}" class="link-primary" style="text-decoration: none;">{{ file.link_text }} <i class="bi bi-file-pdf"></i></a><br/>
+                                            {% endif %}
+                                        {% endfor %}
                                     {% else %}
-                                        {{ heading_value }}
+                                        {% if heading_value.url and heading_value.link_text %}
+                                            <a href="{{ heading_value.url }}" class="link-primary" style="text-decoration: none;">{{ heading_value.link_text }} <i class="bi bi-file-pdf"></i></a>
+                                        {% else %}
+                                            {{ heading_value }}
+                                        {% endif %}
                                     {% endif %}
                                 {% else %}
                                     <span class="badge bg-secondary">Missing</span>

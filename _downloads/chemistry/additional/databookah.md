@@ -14,6 +14,6 @@ subject: Chemistry
 #There should be an entry here for each column in the table you wish to populate:
 Level of Study: AH
 Data Book:
-   url: /chemistry/additional/databooks/HandAHChemDataBookletJun2021.pdf
-   link_text: AH Data Booklet
+    - url: /chemistry/additional/databooks/HandAHChemDataBookletJun2021.pdf
+      link_text: AH Data Booklet
 ---

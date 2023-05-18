@@ -14,6 +14,6 @@ subject: Chemistry
 #There should be an entry here for each column in the table you wish to populate:
 '#': 1
 Comparison Table:
-   url: /chemistry/additional/revH to H comparison.pdf
-   link_text: H v revH Question Comparison
+    - url: /chemistry/additional/revH to H comparison.pdf
+      link_text: H v revH Question Comparison
 ---

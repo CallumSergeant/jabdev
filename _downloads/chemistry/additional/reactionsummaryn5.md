@@ -14,6 +14,6 @@ subject: Chemistry
 #There should be an entry here for each column in the table you wish to populate:
 Level of Study: N5
 Reaction Summary:
-   url: /chemistry/additional/reactionsummary/Nat5ChemReactionSummary.pdf
-   link_text: N5 Reaction Summary
+    - url: /chemistry/additional/reactionsummary/Nat5ChemReactionSummary.pdf
+      link_text: N5 Reaction Summary
 ---

@@ -14,6 +14,6 @@ subject: Chemistry
 #There should be an entry here for each column in the table you wish to populate:
 Level of Study: N5
 Data Book:
-   url: /chemistry/additional/databooks/Nat5ChemDataBookletJun2021.pdf
-   link_text: N5 Data Booklet
+    - url: /chemistry/additional/databooks/Nat5ChemDataBookletJun2021.pdf
+      link_text: N5 Data Booklet
 ---

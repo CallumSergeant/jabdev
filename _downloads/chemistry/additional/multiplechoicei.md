@@ -16,6 +16,6 @@ subject: Chemistry
 Age: Intermediate 1
 Years Covered: 2002-2015
 File:
-   url: /chemistry/additional/mcdata/SQAInt1MCdata.pdf
-   link_text: MC Data
+    - url: /chemistry/additional/mcdata/SQAInt1MCdata.pdf
+      link_text: MC Data
 ---

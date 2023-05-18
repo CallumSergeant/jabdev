@@ -14,6 +14,6 @@ subject: Chemistry
 #There should be an entry here for each column in the table you wish to populate:
 Level of Study: Higher
 Reaction Summary:
-   url: /chemistry/additional/reactionsummary/HchemReactionSummary.pdf
-   link_text: H Reaction Summary
+    - url: /chemistry/additional/reactionsummary/HchemReactionSummary.pdf
+      link_text: H Reaction Summary
 ---
