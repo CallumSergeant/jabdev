@@ -52,3 +52,6 @@ headings: false
 </table>
 
 <p>lorem  <br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+{% include tables.html %}

@@ -1,0 +1,22 @@
+{% for table in page.tables %}
+<h2 style="padding-right:60px" id="{{page.tables.id}}">{{page.tables.title}}</h2>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            {% for col in page.tables.cols %}
+            <th scope="col">{{col.heading}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in site.downloads %}
+        {% if item.category == "data-booklet" and page.subject == item.subject %}
+        <tr>
+                <th scope="row">{{item.level}}</th>
+                <td><a href="/files/{{item.download}}"><i class="bi bi-filetype-pdf"></i></a></td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
