@@ -5,43 +5,24 @@
             <img src="/media/fav.png" alt="Logo" width="40" height="40" class="d-inline-block">
       chem
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarToggler">
             <ul class="navbar-nav">
                 <li class="nav-item {% if page.title == 'Chemistry' %}active{% endif %}">
-                    <a class="nav-link" href="/chemistry">Chemistry {{site.chemlogo}}</a>
+                    <a class="nav-link custom-link" href="{{'/chemistry' | relative_url}}">Chemistry {{site.chemlogo}}</a>
                 </li>
                 <li class="nav-item {% if page.title == 'Maths' %}active{% endif %}">
-                    <a class="nav-link" href="/maths">Maths {{site.mathlogo}}</a>
+                    <a class="nav-link" href="{{'/maths' | relative_url}}">Maths {{site.mathlogo}}</a>
                 </li>
                 <li class="nav-item {% if page.title == 'Physics' %}active{% endif %}">
-                    <a class="nav-link" href="/physics">Physics {{site.physicslogo}}</a>
+                    <a class="nav-link" href="{{'/physics' | relative_url}}">Physics {{site.physicslogo}}</a>
                 </li>
                 <li class="nav-item {% if page.title == 'Biology' %}active{% endif %}">
-                    <a class="nav-link" href="/biology">Biology {{site.biologo}}</a>
+                    <a class="nav-link" href="{{'/biology' | relative_url}}">Biology {{site.biologo}}</a>
                 </li>
             </ul>
         </div>
     </div>
   </nav>
-
-    <!--<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-        <div class="container-fluid">
-            <a class="navbar-brand" style="color: #001e2c;" href="{{ '/' | relative_url }}">JABchem</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
-                aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarToggler">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    {% for nav in site.data.navigation %}
-                    <li class="nav-item {% if page.url == nav.link %}active{% endif %}">
-                        <a class="nav-link" href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </nav>-->

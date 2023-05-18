@@ -9,3 +9,15 @@ body {
   .footer {
     flex-shrink: 0;
   }
+
+  @media (min-width: 992px) {
+    .navbar-nav {
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 991px) {
+    .navbar-nav {
+        justify-content: center;
+    }
+}

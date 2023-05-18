@@ -1,54 +1,65 @@
 <div class="container-fluid bg-light">
-<div class="container border-top">
-<nav class="nav nav-pills flex-column flex-sm-row mb-3 mt-2">
-    {% case page.subject %}
-  {% when "Chemistry" %}
-    {% for nav in site.data.chemistry-nav %}
-      <a class="flex-sm-fill text-sm-center nav-link {% if page.url == nav.link %}active{% endif %}" href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
-    {% endfor %}
-  {% when "Maths" %}
-    {% for nav in site.data.maths-nav %}
-      <a class="flex-sm-fill text-sm-center nav-link {% if page.url == nav.link %}active{% endif %}" href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
-    {% endfor %}
-{% endcase %}
+    <div class="container border-top">
+        <nav class="nav nav-pills flex-column flex-sm-row mb-3 mt-2">
+        {% case page.subject %}
+            {% when "Chemistry" %}
+            {% for nav in site.data.chemistry-nav %}
+            <a class="flex-sm-fill text-sm-center nav-link {% if page.url == nav.link %}active{% endif %}"
+                href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
+            {% endfor %}
+            {% when "Maths" %}
+            {% for nav in site.data.maths-nav %}
+            <a class="flex-sm-fill text-sm-center nav-link {% if page.url == nav.link %}active{% endif %}"
+                href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
+            {% endfor %}
+            {% when "Physics" %}
+            {% for nav in site.data.physics-nav %}
+            <a class="flex-sm-fill text-sm-center nav-link {% if page.url == nav.link %}active{% endif %}"
+                href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
+            {% endfor %}
+            {% when "Biology" %}
+            {% for nav in site.data.bio-nav %}
+            <a class="flex-sm-fill text-sm-center nav-link {% if page.url == nav.link %}active{% endif %}"
+                href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
+            {% endfor %}
+        {% endcase %}
 
-  </nav>
-</div>
+        </nav>
+    </div>
 </div>
 
-<div class="container-fluid pt-3 sticky-top" 
-style="background-color: 
+<div class="container-fluid pt-3 sticky-top" style="background-color: 
     {% if page.subject == "Chemistry" %}#{{site.chemcolour}}{% endif %}
-    {% if page.subject == "Maths" %}#{{site.mathcolour}}{% endif %}
-    {% if page.subject == "Physics" %}#{{site.physicscolour}}{% endif %}
-    {% if page.subject == "Biology" %}#{{site.biocolour}}{% endif %};" 
+    {% if page.subject=="Maths"%}#{{site.mathcolour}}{% endif %}
+    {% if page.subject=="Physics" %}#{{site.physicscolour}}{% endif %}
+    {% if page.subject=="Biology" %}#{{site.biocolour}}{% endif %};"
 role="alert">
     <div class="container">
-        
+
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item text-secondary">
-                {% if page.subject == "Chemistry" %}{{site.chemlogo}}{% endif %}
-                {% if page.subject == "Maths" %}{{site.mathlogo}}{% endif %}
-                {% if page.subject == "Physics" %}{{site.physicslogo}}{% endif %}
-                {% if page.subject == "Biology" %}{{site.biologo}}{% endif %}
-              </li>
-              <li class="breadcrumb-item text-secondary">{{page.subject}}</li>
-              <li class="breadcrumb-item active" aria-current="page">{{page.title}}</li>
+                <li class="breadcrumb-item text-secondary">
+                    {% if page.subject == "Chemistry" %}{{site.chemlogo}}{% endif %}
+                    {% if page.subject == "Maths" %}{{site.mathlogo}}{% endif %}
+                    {% if page.subject == "Physics" %}{{site.physicslogo}}{% endif %}
+                    {% if page.subject == "Biology" %}{{site.biologo}}{% endif %}
+                </li>
+                <li class="breadcrumb-item text-secondary">{{page.subject}}</li>
+                <li class="breadcrumb-item active" aria-current="page">{{page.title}}</li>
             </ol>
-          </nav> 
+        </nav>
     </div>
-  </div>
+</div>
 
-  {% if page.headings != false %}
+{% if page.headings != false %}
 <div class="container mt-4">
-    <div class="alert pt-0 pb-0" style="background-color: #c3e8ff;" role="alert">
+    <div class="alert pt-0 pb-0 bg-light" style="background-color: #c3e8ff;" role="alert">
         <ul class="nav">
             {% for heading in page.headings %}
-                <li class="nav-item "><a class="nav-link" href="#{{ heading.id }}">{{ heading.title }}</a></li>
-                {% endfor %}
-          </ul>
-      </div>
+            <li class="nav-item "><a class="nav-link" href="#{{ heading.id }}">{{ heading.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 
 </div>
 {% endif %}

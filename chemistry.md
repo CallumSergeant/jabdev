@@ -5,3 +5,5 @@ subject: Chemistry
 permalink: /chemistry
 headings: false
 ---
+
+Woo, chemistry!
