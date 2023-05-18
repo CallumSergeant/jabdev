@@ -31,25 +31,24 @@
             {% endif %}
 
             {% for item in sorted_downloads %}
-            {% if item.category == table.id and page.subject == item.subject and page.level == item.level %}
-            <tr>
-                {% for col in table.cols %}
-                {% assign heading_value = item[col.heading] %}
-                <td>
-                    {% if heading_value %}
-                    {% if heading_value.url and heading_value.link_text %}
-                    <a href="{{ heading_value.url }}" style="text-decoration: none;">{{ heading_value.link_text }} <i
-                            class="bi bi-file-pdf"></i></a>
-                    {% else %}
-                    {{ heading_value }}
-                    {% endif %}
-                    {% else %}
-                    <span class="badge bg-secondary">Missing</span>
-                    {% endif %}
-                </td>
-                {% endfor %}
-            </tr>
-            {% endif %}
+                {% if item.category == table.id and page.subject == item.subject and page.level == item.level %}
+                    <tr>
+                        {% for col in table.cols %}
+                            {% assign heading_value = item[col.heading] %}
+                            <td {% if forloop.index0 == 0 %}style="font-weight: bold;"{% endif %}>
+                                {% if heading_value %}
+                                    {% if heading_value.url and heading_value.link_text %}
+                                        <a href="{{ heading_value.url }}" class="link-primary" style="text-decoration: none;">{{ heading_value.link_text }} <i class="bi bi-file-pdf"></i></a>
+                                    {% else %}
+                                        {{ heading_value }}
+                                    {% endif %}
+                                {% else %}
+                                    <span class="badge bg-secondary">Missing</span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>

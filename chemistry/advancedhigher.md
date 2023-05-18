@@ -34,4 +34,11 @@ tables:
       - heading: Past Paper
       - heading: JABchem Marking Scheme
       - heading: SQA Marking Solutions
+  - title: AH Course Notes & Exercises
+    id: ahcoursenotesandexercises
+    cols:
+      - heading: '#'
+      - heading: Unit
+      - heading: Notes
+      - heading: Exercises
 ---
