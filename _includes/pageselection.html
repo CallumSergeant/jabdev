@@ -51,15 +51,18 @@ role="alert">
     </div>
 </div>
 
-{% if page.headings != false %}
+{% if page.tables != null %}
+<div class="container mt-4">
+    <h1>{{page.hero}}</h1>
+    {{page.subtext}}
+</div>
 <div class="container mt-4">
     <div class="alert pt-0 pb-0 bg-light" style="background-color: #c3e8ff;" role="alert">
         <ul class="nav">
-            {% for heading in page.headings %}
+            {% for heading in page.tables %}
             <li class="nav-item "><a class="nav-link" href="#{{ heading.id }}">{{ heading.title }}</a></li>
             {% endfor %}
         </ul>
     </div>
-
 </div>
 {% endif %}

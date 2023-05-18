@@ -1,22 +1,58 @@
 {% for table in page.tables %}
-<h2 style="padding-right:60px" id="{{page.tables.id}}">{{page.tables.title}}</h2>
-<table class="table table-sm">
-    <thead>
-        <tr>
-            {% for col in page.tables.cols %}
-            <th scope="col">{{col.heading}}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in site.downloads %}
-        {% if item.category == "data-booklet" and page.subject == item.subject %}
-        <tr>
-                <th scope="row">{{item.level}}</th>
-                <td><a href="/files/{{item.download}}"><i class="bi bi-filetype-pdf"></i></a></td>
-        </tr>
+<h3 class="mb-3" id="{{table.id}}">{{table.title}}</h3>
+<p>{{table.description}}</p>
+<div class="container mb-3">
+    <table id="myTable" class="table table-sm table-hover mb-5">
+        {% if table.caption %}
+        <caption>{{table.caption}}</caption>
         {% endif %}
-        {% endfor %}
-    </tbody>
-</table>
+        <thead>
+            <tr>
+                {% for col in table.cols %}
+                <th scope="col">{{col.heading}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% assign sorted_downloads = site.downloads | sort: "Year" %}
+            {% assign has_year = false %}
+
+            {% for item in sorted_downloads %}
+            {% if item.year %}
+                {% assign has_year = true %}
+                {% break %}
+            {% endif %}
+            {% endfor %}
+
+            {% if has_year %}
+            {% assign sorted_downloads = site.downloads | sort: "Year" | reverse %}
+            {% else %}
+            {% assign sorted_downloads = site.downloads | sort: "#" %}
+            {% endif %}
+
+            {% for item in sorted_downloads %}
+            {% if item.category == table.id and page.subject == item.subject and page.level == item.level %}
+            <tr>
+                {% for col in table.cols %}
+                {% assign heading_value = item[col.heading] %}
+                <td>
+                    {% if heading_value %}
+                    {% if heading_value.url and heading_value.link_text %}
+                    <a href="{{ heading_value.url }}" style="text-decoration: none;">{{ heading_value.link_text }} <i
+                            class="bi bi-file-pdf"></i></a>
+                    {% else %}
+                    {{ heading_value }}
+                    {% endif %}
+                    {% else %}
+                    <span class="badge bg-secondary">Missing</span>
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
 {% endfor %}
