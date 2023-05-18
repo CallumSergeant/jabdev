@@ -18,14 +18,14 @@ tables:
     description: Materials for the study of all SQA Chemistry courses.
     id: databbooks
     cols:
-        heading: Level of Study
-        heading: Data Book
+        1: Level of Study
+        2: Data Book
   - title: Reaction Summaries
     description: false
     id: reactionsummaries
     cols:
-        heading: Level of Study
-        heading: Reaction Summary
+        1: Level of Study
+        2: Reaction Summary
 ---
     <!--
     <!-- Intro text for AH CHemistry page -->
