@@ -1,20 +1,14 @@
 ---
 layout: main
-title: Higher Chemistry
-subject: Chemistry
-permalink: /chemistry/higher
-headings:
-  - id: databooks
-    title: Data Booklets
-  - id: reactionsummaries
-    title: Reactions Summaries
-  - id: multiplechoicedata
-    title: Multiple Choice Data
+title: Higher Maths
+subject: Maths
+permalink: /maths/higher
+headings: false
 ---
 
 <!-- Intro text for AH CHemistry page -->
 <div class="container">
-<h1>Additional Chemistry Resources</h1>
+<h1>Additional Maths Resources</h1>
 <p class="lead">Materials for the study of all SQA Chemistry courses.</p>
 <!-- Table for data booklets -->
 <h2 style="padding-right:60px" id="databooks">Data Booklets</h2>

@@ -1,23 +1,11 @@
-main > .container {
-    margin: 60px 15px 0;
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
   }
-  
-  .nopadding {
-    padding: 0;
-    margin: 0;
+  .content {
+    flex: 1 0 auto;
   }
-  
-  .wrapper {
-    overflow-x: hidden;
-  }
-  
-  @media (min-width: 1200px) {
-    .footer-padding{
-      margin-top:85px;
-    }
-    .footer {
-      position: fixed;
-      width:100%;
-      bottom: 0;
-    }
+  .footer {
+    flex-shrink: 0;
   }

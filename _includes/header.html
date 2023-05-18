@@ -1,17 +1,47 @@
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="{{ '/' | relative_url }}">JABchem</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
-        aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #006689;">
+    <div class="container d-flex justify-content-center ">
+        <a class="navbar-brand fs-3" href="{{ '/' | relative_url }}">
 
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            {% for nav in site.data.navigation %}
-            <li class="nav-item {% if page.url == nav.link %}active{% endif %}">
-                <a class="nav-link" href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
-            </li>
-            {% endfor %}
-        </ul>
+            <img src="/media/fav.png" alt="Logo" width="40" height="40" class="d-inline-block">
+      chem
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item {% if page.title == 'Chemistry' %}active{% endif %}">
+                    <a class="nav-link" href="/chemistry">Chemistry {{site.chemlogo}}</a>
+                </li>
+                <li class="nav-item {% if page.title == 'Maths' %}active{% endif %}">
+                    <a class="nav-link" href="/maths">Maths {{site.mathlogo}}</a>
+                </li>
+                <li class="nav-item {% if page.title == 'Physics' %}active{% endif %}">
+                    <a class="nav-link" href="/physics">Physics {{site.physicslogo}}</a>
+                </li>
+                <li class="nav-item {% if page.title == 'Biology' %}active{% endif %}">
+                    <a class="nav-link" href="/biology">Biology {{site.biologo}}</a>
+                </li>
+            </ul>
+        </div>
     </div>
-</nav>
+  </nav>
+
+    <!--<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="color: #001e2c;" href="{{ '/' | relative_url }}">JABchem</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
+                aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% for nav in site.data.navigation %}
+                    <li class="nav-item {% if page.url == nav.link %}active{% endif %}">
+                        <a class="nav-link" href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </nav>-->
