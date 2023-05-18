@@ -4,11 +4,11 @@
     {% case page.subject %}
   {% when "Chemistry" %}
     {% for nav in site.data.chemistry-nav %}
-      <a class="flex-sm-fill text-sm-center nav-link" href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
+      <a class="flex-sm-fill text-sm-center nav-link {% if page.url == nav.link %}active{% endif %}" href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
     {% endfor %}
   {% when "Maths" %}
     {% for nav in site.data.maths-nav %}
-      <a class="flex-sm-fill text-sm-center nav-link" href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
+      <a class="flex-sm-fill text-sm-center nav-link {% if page.url == nav.link %}active{% endif %}" href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
     {% endfor %}
 {% endcase %}
 
