@@ -1,13 +1,13 @@
-<div class="container-fluid pt-3 sticky-top d-none d-sm-block" style="background-color: 
+<div class="sticky-top">
+<div class="container-fluid sticky-top d-none d-sm-block pt-2 pb-2" style="background-color: 
     {% if page.subject == "Chemistry" %}#{{site.chemcolour}}{% endif %}
     {% if page.subject=="Maths"%}#{{site.mathcolour}}{% endif %}
     {% if page.subject=="Physics" %}#{{site.physicscolour}}{% endif %}
-    {% if page.subject=="Biology" %}#{{site.biocolour}}{% endif %};"
-role="alert">
+    {% if page.subject=="Biology" %}#{{site.biocolour}}{% endif %};">
     <div class="container">
 
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
+            <ol class="breadcrumb pb-0 mb-0">
                 <li class="breadcrumb-item text-secondary">
                     {% if page.subject == "Chemistry" %}{{site.chemlogo}}{% endif %}
                     {% if page.subject == "Maths" %}{{site.mathlogo}}{% endif %}
@@ -23,7 +23,7 @@ role="alert">
 
 <div class="container-fluid bg-light d-none d-sm-block">
     <div class="container">
-        <nav class="nav nav-pills flex-column flex-sm-row mb-3 mt-2">
+        <nav class="nav nav-pills flex-column flex-sm-row pb-2 pt-2">
         {% case page.subject %}
             {% when "Chemistry" %}
             {% for nav in site.data.chemistry-nav %}
@@ -56,7 +56,7 @@ role="alert">
         </nav>
     </div>
 </div>
-
+</div>
 <!--
     Mobile Navigation Below
 -->
@@ -146,20 +146,3 @@ role="alert">
         Array.from(icons).forEach(icon => icon.classList.toggle('d-none'));
     }
 </script>
-
-
-{% if page.tables != null %}
-<div class="container mt-4">
-    <h1>{{page.hero}}</h1>
-    {{page.subtext}}
-</div>
-<div class="container mt-4">
-    <div class="alert pt-0 pb-0 bg-light" style="background-color: #c3e8ff;" role="alert">
-        <ul class="nav">
-            {% for heading in page.tables %}
-            <li class="nav-item "><a class="nav-link" href="#{{ heading.id }}">{{ heading.title }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-{% endif %}
