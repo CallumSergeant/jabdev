@@ -1,9 +1,8 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light" style="background-color: #006689;">
+<nav class="navbar navbar-expand-md navbar-light bg-light d-none d-md-block">
     <div class="container d-flex justify-content-center ">
         <a class="navbar-brand fs-3" href="{{ '/' | relative_url }}">
-
             <img src="/media/fav.png" alt="Logo" width="40" height="40" class="d-inline-block">
-      chem
+                chem
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -26,3 +25,32 @@
         </div>
     </div>
   </nav>
+
+  <nav class="navbar navbar-expand-md navbar-light bg-light d-md-none">
+    <div class="container d-flex justify-content-center ">
+        <a class="navbar-brand fs-3" href="{{ '/' | relative_url }}">
+            <img src="/media/fav.png" alt="Logo" width="40" height="40" class="d-inline-block">
+                chem
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerMobile" aria-controls="navbarTogglerMobile" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarTogglerMobile">
+            <ul class="navbar-nav text-center">
+                <li class="nav-item {% if page.title == 'Chemistry' %}active{% endif %}">
+                    <a class="nav-link custom-link" href="{{'/chemistry' | relative_url}}">Chemistry {{site.chemlogo}}</a>
+                </li>
+                <li class="nav-item {% if page.title == 'Maths' %}active{% endif %}">
+                    <a class="nav-link" href="{{'/maths' | relative_url}}">Maths {{site.mathlogo}}</a>
+                </li>
+                <li class="nav-item {% if page.title == 'Physics' %}active{% endif %}">
+                    <a class="nav-link" href="{{'/physics' | relative_url}}">Physics {{site.physicslogo}}</a>
+                </li>
+                <li class="nav-item {% if page.title == 'Biology' %}active{% endif %}">
+                    <a class="nav-link" href="{{'/biology' | relative_url}}">Biology {{site.biologo}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
