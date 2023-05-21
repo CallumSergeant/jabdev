@@ -23,7 +23,8 @@ description: testing 123 # this means to ignore newlines until "baseurl:"
 author: Callum S
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "http://dev.jabchem.org.uk" # the base hostname & protocol for your site, e.g. http://example.com
-reporturl: https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAALBN8M1UMUFGTVRROE4xNjNQU1VBWjBKSkhBTE0xRi4u
+reporturl: https://docs.google.com/forms/d/e/1FAIpQLSdLGt6lFgfMX3zQDPibfccYmPBzGqeKCtYNVdAU-7MXLaykNA/viewform?usp=pp_url&entry.1725158399=https://jabchem.org.uk
+request: mailto:getintouch@jabchem.org.uk?subject=Permission
 chemlogo: <i class="fa-solid fa-flask"></i>
 mathlogo: <i class="fa-solid fa-calculator"></i>
 physicslogo: <i class="fa-solid fa-atom"></i>
