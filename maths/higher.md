@@ -1,57 +1,42 @@
 ---
-layout: main
+layout: content
 title: Higher Maths
 subject: Maths
+level: Higher
 permalink: /maths/higher
-headings: false
+hero: Higher Maths Resources
+subtext: Materials for the study of H SQA Maths courses.
+tables:
+  - title: Higher Self-Evaluation
+    id: higherselfevaluation
+    cols:
+      - heading: '#'
+      - heading: File
+      - heading: Link
+  - title: SQA Past Papers - Higher
+    id: sqapastpapershigher
+    cols:
+      - heading: Year
+      - heading: Past Paper
+      - heading: JABchem Marking Scheme
+      - heading: SQA Marking Scheme
+  - title: SQA Past Papers - Revised Higher
+    id: sqapastpapersrevisedhigher
+    cols:
+      - heading: Year
+      - heading: Past Paper
+      - heading: JABchem Marking Scheme
+      - heading: SQA Marking Scheme
+  - title: SQA Past Papers - Old Higher
+    id: sqapastpapersoldhigher
+    cols:
+      - heading: Year
+      - heading: Past Paper
+      - heading: JABchem Marking Scheme
+      - heading: SQA Marking Scheme
+  - title: Higher Past Paper Archieve
+    id: higherpastpaperarchieve
+    cols:
+      - heading: Year
+      - heading: Past Paper
 ---
-
-<!-- Intro text for AH CHemistry page -->
-<div class="container">
-<h1>Additional Maths Resources</h1>
-<p class="lead">Materials for the study of all SQA Chemistry courses.</p>
-<!-- Table for data booklets -->
-<h2 style="padding-right:60px" id="databooks">Data Booklets</h2>
-<table class="table table-sm">
-    <thead>
-        <tr>
-            <th scope="col">Level Of Study</th>
-            <th scope="col">Data Book</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in site.downloads %}
-        {% if item.category == "data-booklet" and page.subject == item.subject %}
-        <tr>
-                <th scope="row">{{item.level}}</th>
-                <td><a href="/files/{{item.download}}"><i class="bi bi-filetype-pdf"></i></a></td>
-        </tr>
-        {% endif %}
-        {% endfor %}
-    </tbody>
-</table>
-<!-- Table for data booklets -->
-<h2 style="padding-top:60px" id="reactionsummaries">Reaction Summaries</h2>
-<table class="table table-sm">
-    <thead>
-        <tr>
-            <th scope="col">Level Of Study</th>
-            <th scope="col">Reaction Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in site.downloads %}
-        {% if item.category == "reaction-summary" %}
-        <tr>
-                <th scope="row">{{item.level}}</th>
-                <td><a href="/files/{{item.download}}"><i class="bi bi-filetype-pdf"></i></a></td>
-        </tr>
-        {% endif %}
-        {% endfor %}
-    </tbody>
-</table>
-
-<p>lorem  <br><br><br><br><br><br><br><br><br><br><br><br>
-
-
-{% include tables.html %}

@@ -4,7 +4,7 @@ title: National 5 Chemistry
 subject: Chemistry
 level: National 5
 permalink: /chemistry/national5
-hero: Higher Chemistry Resources
+hero: National 5 Chemistry Resources
 subtext: Materials for the study of N5 SQA Chemistry courses.
 tables:
   - title: N5 Self-Evaluation

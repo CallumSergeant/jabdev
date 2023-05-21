@@ -8,13 +8,14 @@
 
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb pb-0 mb-0">
+                <li class="breadcrumb-item text-secondary">JABchem</li>
                 <li class="breadcrumb-item text-secondary">
                     {% if page.subject == "Chemistry" %}{{site.chemlogo}}{% endif %}
                     {% if page.subject == "Maths" %}{{site.mathlogo}}{% endif %}
                     {% if page.subject == "Physics" %}{{site.physicslogo}}{% endif %}
                     {% if page.subject == "Biology" %}{{site.biologo}}{% endif %}
+                    {{page.subject}}
                 </li>
-                <li class="breadcrumb-item text-secondary">{{page.subject}}</li>
                 <li class="breadcrumb-item active" aria-current="page">{{page.title}} <i class="bi bi-chevron-down"></i></li>
             </ol>
         </nav>
@@ -71,13 +72,14 @@ role="alert">
 
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
+                <li class="breadcrumb-item text-secondary">JABchem</li>
                 <li class="breadcrumb-item text-secondary">
                     {% if page.subject == "Chemistry" %}{{site.chemlogo}}{% endif %}
                     {% if page.subject == "Maths" %}{{site.mathlogo}}{% endif %}
                     {% if page.subject == "Physics" %}{{site.physicslogo}}{% endif %}
                     {% if page.subject == "Biology" %}{{site.biologo}}{% endif %}
+                    {{page.subject}}
                 </li>
-                <li class="breadcrumb-item text-secondary">{{page.subject}}</li>
                 <li class="breadcrumb-item active" aria-current="page">
                     <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-expanded="false" aria-controls="navbarNavDropdown" onclick="toggleChevron(this)">
                         {{page.title}} <i class="bi bi-chevron-right"></i><i class="bi bi-chevron-down d-none"></i>
@@ -117,18 +119,37 @@ role="alert">
                     href="{{ nav.link | relative_url }}">{{ nav.title }}</a>
                 </li>
                 {% endfor %}
-                <!-- Repeat for other subjects -->
             {% endcase %}
             </nav>
         </div>
     </div>
 </div>
 
-{% if page.tables != null %}
-<div class="container mt-4">
-    <h1>{{page.hero}}</h1>
-    {{page.subtext}}
+{% if page.hero %}
+<div class="container mt-3">
+    <div class="h-100 p-5 text-dark border rounded-3 d-flex justify-content-between align-items-start" style="background-color: 
+    {% if page.subject == "Chemistry" %}#{{site.chemcolour}}{% endif %}
+    {% if page.subject=="Maths"%}#{{site.mathcolour}}{% endif %}
+    {% if page.subject=="Physics" %}#{{site.physicscolour}}{% endif %}
+    {% if page.subject=="Biology" %}#{{site.biocolour}}{% endif %};">
+        <div>
+            <h2>{{page.hero}}</h2>
+            <p>{{page.subtext}}</p>
+        </div>
+        <div class="fs-1 d-none d-sm-block">
+            {% if page.subject == "Chemistry" %}{{site.chemlogo}}{% endif %}
+            {% if page.subject == "Maths" %}{{site.mathlogo}}{% endif %}
+            {% if page.subject == "Physics" %}{{site.physicslogo}}{% endif %}
+            {% if page.subject == "Biology" %}{{site.biologo}}{% endif %}
+        </div>
+    </div>
 </div>
+
+
+{% endif %}
+
+
+{% if page.tables %}
 <div class="container mt-4">
     <div class="alert pt-0 pb-0 bg-light" style="background-color: #c3e8ff;" role="alert">
         <ul class="nav">
@@ -139,6 +160,7 @@ role="alert">
     </div>
 </div>
 {% endif %}
+
 
 <script>
     function toggleChevron(button) {

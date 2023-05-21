@@ -14,22 +14,24 @@
             </tr>
         </thead>
         <tbody>
-            {% assign sorted_downloads = site.downloads | sort: "Year" %}
             {% assign has_year = false %}
-
-            {% for item in sorted_downloads %}
-            {% if item.year %}
-                {% assign has_year = true %}
-                {% break %}
-            {% endif %}
+            {% assign has_hash = false %}
+            {% for col in table.cols %}
+                {% if col.heading == 'Year' %}
+                    {% assign has_year = true %}
+                {% elsif col.heading == '#' %}
+                    {% assign has_hash = true %}
+                {% endif %}
             {% endfor %}
 
             {% if has_year %}
-            {% assign sorted_downloads = site.downloads | sort: "Year" | reverse %}
+                {% assign sorted_downloads = site.downloads | sort: 'Year' | reverse %}
+            {% elsif has_hash %}
+                {% assign sorted_downloads = site.downloads | sort: '#' %}
             {% else %}
-            {% assign sorted_downloads = site.downloads | sort: "#" %}
+                {% assign sorted_downloads = site.downloads %}
             {% endif %}
-
+            
             {% for item in sorted_downloads %}
                 {% if item.category == table.id and page.subject == item.subject and page.level == item.level %}
                     <tr>
