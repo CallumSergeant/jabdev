@@ -18,8 +18,8 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: JABdev
-description: testing 123 # this means to ignore newlines until "baseurl:"
+title: JABchem
+description: A website for revision of Scottish SQA Exams in Chemistry, Maths, Physics and Biology at National 5, Higher and Advanced Higher. Included are SQA Past Papers, Marking Schemes, Traffic Light Evaluation Summaries, SQA Question Maps and so much more.  # this means to ignore newlines until "baseurl:"
 author: Callum S
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "http://dev.jabchem.org.uk" # the base hostname & protocol for your site, e.g. http://example.com

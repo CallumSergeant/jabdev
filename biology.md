@@ -1,6 +1,7 @@
 ---
 layout: subjecthome
 title: Biology Home
+description: JABchem Biology has a huge selection past papers and revision materials for those studying for SQA Biology exams.
 subject: Biology
 level: Home
 permalink: /biology
