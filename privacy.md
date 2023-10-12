@@ -9,7 +9,7 @@ permalink: /privacy
 
 JABchem collects the least amount of data about our users as possible – we genuinely value our user’s right to privacy.
 
-<span class="badge bg-primary">Last Reviewed</span> 21/05/2023
+<span class="badge bg-primary">Last Reviewed</span> 12/10/2023
 
 #### How we handle your privacy
 
@@ -42,7 +42,7 @@ Any communication from JABchem will be from one of our official email addresses,
 Official channels that we communicate on:
 
 *   our email addresses ending @jabchem.org.uk,
-*   on Twitter [@JAB_chem](https://twitter.com/jab_chem).
+*   on X (Twitter) [@JAB_chem](https://twitter.com/jab_chem).
 
 Anyone who has reached out from a channel not listed above is impersonating JABchem likely with malicious intent.
 
