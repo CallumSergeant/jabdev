@@ -8,8 +8,8 @@ subject: chemistry
 <p class="text-secondary">A website for revision of Scottish SQA Exams in Chemistry, Maths, Physics and Biology at National 5, Higher and Advanced Higher. Included are SQA Past Papers, Marking Schemes, Traffic Light Evaluation Summaries, SQA Question Maps and so much more.</p>
 
 <div class="h-100 p-5 mt-5 bg-light border rounded-3">
-  <h2>A new look, JABchem <span class="badge bg-primary">V2</span></h2>
-  <p>Some things have changed around here! Don't worry, all the same content you are used to from JABchem is still here, but it is now easier than ever to find and use. Dive right in to the subject you are after from the menus at the top or bottom of the page!</p>
+  <h2>New past papers! <span class="badge bg-primary">NEW</span></h2>
+  <p>The 2023 past papers have now been added for Chemistry, Maths, Biology and Physics!</p>
 </div>
 
 <div class="col-12">
@@ -57,7 +57,7 @@ subject: chemistry
 
 <div class="h-100 p-5 mt-5 bg-primary text-light border rounded-3">
   <h2>We're looking for feedback!</h2>
-  <p>With the launch of JABchem <span class="badge bg-light text-primary">V2</span> we are looking for feedback about how the new site is! Is it easy to navigate, does it look better? Tell us what you think below:</p>
+  <p>With JABchem <span class="badge bg-light text-primary">V2</span> now in full swing, we are still on the lookout for feedback about how the site is! Tell us your thoughts below:</p>
   <a href="{{site.reporturl}}?indexfeedbackcall" class="btn btn-light">Give feeback</a>
 </div>
 
