@@ -8,8 +8,8 @@ subject: chemistry
 <p class="text-secondary">A website for revision of Scottish SQA Exams in Chemistry, Maths, Physics and Biology at National 5, Higher and Advanced Higher. Included are SQA Past Papers, Marking Schemes, Traffic Light Evaluation Summaries, SQA Question Maps and so much more.</p>
 
 <div class="h-100 p-5 mt-5 bg-light border rounded-3">
-  <h2>New past papers! <span class="badge bg-primary">NEW</span></h2>
-  <p>The 2023 past papers have now been added for Chemistry, Maths, Biology and Physics!</p>
+  <h2>New JABstem materials! <span class="badge bg-primary">Physics {{site.physicslogo}}</span></h2>
+  <p>From 2014 to 2023, you can now revise with JABstem Physics marking schemes for N5 papers!</p>
 </div>
 
 <div class="col-12">

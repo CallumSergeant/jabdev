@@ -7,11 +7,18 @@ permalink: /physics/national5
 hero: National 5 Physics Resources
 subtext: Materials for the study of N5 SQA Physics courses.
 tables:
+  - title: N5 Self Evaluation
+    id: n5selfevaluation
+    cols:
+      - heading: '#'
+      - heading: File
+      - heading: Link
   - title: SQA Past Papers - N5
     id: sqapastpapersn5
     cols:
       - heading: Year
       - heading: Past Paper
+      - heading: JABstem Marking Scheme
       - heading: SQA Marking Scheme
   - title: SQA Past Papers - Int 2
     id: sqapastpapersint2
