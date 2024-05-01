@@ -58,6 +58,6 @@ subject: chemistry
 <div class="h-100 p-5 mt-5 bg-primary text-light border rounded-3">
   <h2>We're looking for feedback!</h2>
   <p>With JABchem <span class="badge bg-light text-primary">V2</span> now in full swing, we are still on the lookout for feedback about how the site is! Tell us your thoughts below:</p>
-  <a href="{{site.reporturl}}?indexfeedbackcall" class="btn btn-light">Give feeback</a>
+  <a href="{{site.reporturl}}?indexfeedbackcall" class="btn btn-light">Give feedback</a>
 </div>
 
