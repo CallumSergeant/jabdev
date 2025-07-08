@@ -1,8 +1,6 @@
 backend:
-  name: github
-  repo: CallumSergeant/jabdev
-  branch: main                # or 'master' if that's your default
-  site_domain: jabchem.org.uk   # your live domain (custom domain recommended)
+  name: git-gateway
+  branch: main # Branch to update (optional; defaults to master)
 
 media_folder: ""              # allow uploads anywhere (optional, use root)
 public_folder: "/"            # display correct link in UI
