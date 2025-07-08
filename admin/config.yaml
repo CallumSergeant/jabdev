@@ -1,0 +1,44 @@
+backend:
+  name: github
+  branch: main                # or 'master' if that's your default
+  site_domain: jabchem.org.uk   # your live domain (custom domain recommended)
+
+media_folder: ""              # allow uploads anywhere (optional, use root)
+public_folder: "/"            # display correct link in UI
+
+collections:
+  - name: "downloads"
+    label: "Download Entries"
+    label_singular: "Entry"
+    folder: "_downloads"
+    create: true
+    slug: "{{slug}}"          # keep original filenames
+    nested:
+      depth: 2                # because you use subject/level
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Level", name: "level", widget: "select", options: ["National 5", "Higher", "Advanced Higher"]}
+      - {label: "Subject", name: "subject", widget: "string"}
+      - {label: "Category", name: "category", widget: "string"}
+      - {label: "Year", name: "Year", widget: "string"}
+
+      - label: "Past Paper"
+        name: "Past Paper"
+        widget: "list"
+        fields:
+          - {label: "Link Text", name: "link_text", widget: "string"}
+          - {label: "PDF URL", name: "url", widget: "string"}
+
+      - label: "JABchem Marking Scheme"
+        name: "JABchem Marking Scheme"
+        widget: "list"
+        fields:
+          - {label: "Link Text", name: "link_text", widget: "string"}
+          - {label: "PDF URL", name: "url", widget: "string"}
+
+      - label: "SQA Marking Scheme"
+        name: "SQA Marking Scheme"
+        widget: "list"
+        fields:
+          - {label: "Link Text", name: "link_text", widget: "string"}
+          - {label: "PDF URL", name: "url", widget: "string"}
