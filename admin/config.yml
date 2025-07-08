@@ -1,9 +1,6 @@
 backend:
   name: github
-  repo: CallumSergeant/jabdev  # replace with your actual GitHub repo
-  branch: main                # or 'master'
-  base_url: https://decapcms.org
-  auth_endpoint: auth
+  repo: CallumSergeant/jabdev
 
 media_folder: ""              # allow uploads anywhere (optional, use root)
 public_folder: "/"            # display correct link in UI
