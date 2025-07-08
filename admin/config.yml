@@ -1,5 +1,6 @@
 backend:
   name: github
+  repo: CallumSergeant/jabdev
   branch: main                # or 'master' if that's your default
   site_domain: jabchem.org.uk   # your live domain (custom domain recommended)
 
