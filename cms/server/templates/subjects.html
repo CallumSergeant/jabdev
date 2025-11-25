@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Subjects - JABchem CMS{% endblock %}
+
+{% block content %}
+<div class="subjects-page">
+    <h1>Subjects</h1>
+    
+    <div id="subjects-grid" class="subjects-grid">
+        <p>Loading...</p>
+    </div>
+</div>
+
+<script>
+fetch('/api/structure')
+    .then(r => r.json())
+    .then(subjects => {
+        const grid = document.getElementById('subjects-grid');
+        
+        const html = subjects.map(subject => `
+            <div class="subject-card" style="border-left: 4px solid #${subject.color}">
+                <h2>${subject.name}</h2>
+                <p>${subject.levels.length} levels</p>
+                <div class="levels-list">
+                    ${subject.levels.map(level => `
+                        <div class="level-item">
+                            <a href="/subject/${subject.id}?level=${level.id}">
+                                ${level.name} (${level.categories.reduce((sum, cat) => sum + (cat.paper_count || 0), 0)} papers)
+                            </a>
+                        </div>
+                    `).join('')}
+                </div>
+                <a href="/subject/${subject.id}" class="btn btn-small">Manage</a>
+            </div>
+        `).join('');
+        
+        grid.innerHTML = html;
+    });
+</script>
+{% endblock %}

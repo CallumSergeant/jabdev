@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Subject Detail - JABchem CMS{% endblock %}
+
+{% block content %}
+<div class="subject-detail">
+    <div id="subject-header"></div>
+    
+    <div id="levels-container"></div>
+</div>
+
+<script>
+const subjectId = {{ subject_id }};
+const urlParams = new URLSearchParams(window.location.search);
+const levelId = urlParams.get('level');
+
+fetch(`/api/subjects/${subjectId}`)
+    .then(r => r.json())
+    .then(subject => {
+        document.getElementById('subject-header').innerHTML = `
+            <h1>${subject.name}</h1>
+            <p>${subject.description || ''}</p>
+        `;
+        
+        const levelsHtml = subject.levels.map(level => `
+            <div class="level-section" id="level-${level.id}">
+                <h2>${level.name}</h2>
+                <div class="categories-loading">Loading categories...</div>
+            </div>
+        `).join('');
+        
+        document.getElementById('levels-container').innerHTML = levelsHtml;
+        
+        // Load categories for each level
+        subject.levels.forEach(level => {
+            fetch(`/api/levels/${level.id}`)
+                .then(r => r.json())
+                .then(levelData => {
+                    const container = document.querySelector(`#level-${level.id} .categories-loading`);
+                    
+                    if (levelData.categories.length === 0) {
+                        container.innerHTML = '<p class="empty">No categories yet</p>';
+                        return;
+                    }
+                    
+                    const html = levelData.categories.map(cat => `
+                        <div class="category-card">
+                            <h3>${cat.name}</h3>
+                            <a href="/papers/${cat.id}" class="btn btn-small">View Papers</a>
+                        </div>
+                    `).join('');
+                    
+                    container.innerHTML = `<div class="categories-grid">${html}</div>`;
+                });
+        });
+    });
+</script>
+{% endblock %}

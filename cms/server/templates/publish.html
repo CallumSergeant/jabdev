@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Publish - JABchem CMS{% endblock %}
+
+{% block content %}
+<div class="publish-page">
+    <h1>Publish Changes</h1>
+    
+    <div class="publish-form">
+        <p>Generate markdown files and push to GitHub</p>
+        
+        <div class="form-group">
+            <label>Commit Message</label>
+            <input type="text" id="commit-message" placeholder="Update from CMS" value="Update from CMS">
+        </div>
+        
+        <button id="publish-btn" class="btn btn-success">Publish to GitHub</button>
+        
+        <div id="publish-result"></div>
+    </div>
+    
+    <div class="publish-history">
+        <h2>Publish History</h2>
+        <div id="history-list"></div>
+    </div>
+</div>
+
+<script>
+function loadHistory() {
+    fetch('/api/publish/history')
+        .then(r => r.json())
+        .then(data => {
+            const list = document.getElementById('history-list');
+            
+            if (data.length === 0) {
+                list.innerHTML = '<p class="empty">No publish history yet</p>';
+                return;
+            }
+            
+            const html = data.map(item => `
+                <div class="history-item ${item.status}">
+                    <div class="history-header">
+                        <span class="history-status">${item.status}</span>
+                        <span class="history-date">${new Date(item.published_at).toLocaleString()}</span>
+                    </div>
+                    <div class="history-message">${item.message || 'No message'}</div>
+                    ${item.commit_hash ? `<div class="history-commit">${item.commit_hash.substring(0, 8)}</div>` : ''}
+                </div>
+            `).join('');
+            
+            list.innerHTML = html;
+        });
+}
+
+document.getElementById('publish-btn').addEventListener('click', () => {
+    const message = document.getElementById('commit-message').value;
+    const result = document.getElementById('publish-result');
+    const btn = document.getElementById('publish-btn');
+    
+    btn.disabled = true;
+    result.innerHTML = '<p class="loading">Publishing...</p>';
+    
+    fetch('/api/publish', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({message})
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            result.innerHTML = `<p class="success">✓ ${data.message}</p>`;
+            loadHistory();
+        } else {
+            result.innerHTML = `<p class="error">✗ Error: ${data.error}</p>`;
+        }
+        btn.disabled = false;
+    })
+    .catch(err => {
+        result.innerHTML = `<p class="error">✗ Error: ${err.message}</p>`;
+        btn.disabled = false;
+    });
+});
+
+loadHistory();
+</script>
+{% endblock %}

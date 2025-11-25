@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - JABchem CMS{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h1>JABchem CMS Dashboard</h1>
+    
+    <div class="search-section">
+        <h2>Search</h2>
+        <input type="text" id="global-search" placeholder="Search papers, subjects, levels..." class="search-input">
+        <div id="search-results"></div>
+    </div>
+    
+    <div class="stats-grid" id="stats">
+        <div class="stat-card">
+            <h3>Subjects</h3>
+            <p class="stat-number" id="subject-count">-</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Papers</h3>
+            <p class="stat-number" id="paper-count">-</p>
+        </div>
+        <div class="stat-card">
+            <h3>Categories</h3>
+            <p class="stat-number" id="category-count">-</p>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="action-buttons">
+            <a href="/subjects" class="btn btn-primary">Manage Subjects</a>
+            <a href="/upload" class="btn btn-secondary">Upload Papers</a>
+            <a href="/publish" class="btn btn-success">Publish Changes</a>
+        </div>
+    </div>
+
+    <div class="recent-activity">
+        <h2>Recent Publishes</h2>
+        <div id="publish-history"></div>
+    </div>
+</div>
+
+<script>
+// Load dashboard stats
+fetch('/api/structure')
+    .then(r => r.json())
+    .then(data => {
+        let paperCount = 0;
+        let categoryCount = 0;
+        
+        data.forEach(subject => {
+            subject.levels.forEach(level => {
+                categoryCount += level.categories.length;
+                level.categories.forEach(cat => {
+                    paperCount += cat.paper_count || 0;
+                });
+            });
+        });
+        
+        document.getElementById('subject-count').textContent = data.length;
+        document.getElementById('paper-count').textContent = paperCount;
+        document.getElementById('category-count').textContent = categoryCount;
+    });
+
+// Load publish history
+fetch('/api/publish/history')
+    .then(r => r.json())
+    .then(data => {
+        const container = document.getElementById('publish-history');
+        if (data.length === 0) {
+            container.innerHTML = '<p class="empty">No publish history yet</p>';
+            return;
+        }
+        
+        const html = data.slice(0, 5).map(item => `
+            <div class="history-item ${item.status}">
+                <div class="history-status">${item.status}</div>
+                <div class="history-message">${item.message || 'No message'}</div>
+                <div class="history-date">${new Date(item.published_at).toLocaleString()}</div>
+            </div>
+        `).join('');
+        
+        container.innerHTML = html;
+    });
+
+// Global search functionality
+let searchData = null;
+let searchDataLoaded = false;
+
+async function loadSearchData() {
+    if (searchDataLoaded) return;
+    searchDataLoaded = true;
+    
+    const structure = await fetch('/api/structure').then(r => r.json());
+    searchData = {
+        subjects: [],
+        levels: [],
+        categories: [],
+        papers: []
+    };
+    
+    for (const subject of structure) {
+        searchData.subjects.push({
+            type: 'subject',
+            name: subject.name,
+            url: `/subject/${subject.id}`,
+            meta: ''
+        });
+        
+        for (const level of subject.levels) {
+            searchData.levels.push({
+                type: 'level',
+                name: `${subject.name} - ${level.name}`,
+                url: `/subject/${subject.id}?level=${level.id}`,
+                meta: subject.name
+            });
+            
+            for (const category of level.categories) {
+                searchData.categories.push({
+                    type: 'category',
+                    name: category.name,
+                    url: `/papers/${category.id}`,
+                    meta: `${subject.name} - ${level.name}`,
+                    paperCount: category.paper_count || 0
+                });
+                
+                // Load papers for this category
+                const papers = await fetch(`/api/papers/category/${category.id}`).then(r => r.json());
+                papers.forEach(paper => {
+                    searchData.papers.push({
+                        type: 'paper',
+                        name: `${paper.year}`,
+                        url: `/papers/${category.id}`,
+                        meta: `${subject.name} - ${level.name} - ${category.name}`,
+                        year: paper.year,
+                        categoryId: category.id
+                    });
+                });
+            }
+        }
+    }
+}
+
+// Only load search data when user focuses on search input
+document.getElementById('global-search').addEventListener('focus', () => {
+    if (!searchDataLoaded) {
+        loadSearchData();
+    }
+}, { once: true });
+
+document.getElementById('global-search').addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    const resultsDiv = document.getElementById('search-results');
+    
+    if (!query || !searchData) {
+        resultsDiv.innerHTML = '';
+        resultsDiv.style.display = 'none';
+        return;
+    }
+    
+    // Search across all data
+    const results = [];
+    
+    // Search subjects
+    searchData.subjects.forEach(item => {
+        if (item.name.toLowerCase().includes(query)) {
+            results.push(item);
+        }
+    });
+    
+    // Search levels
+    searchData.levels.forEach(item => {
+        if (item.name.toLowerCase().includes(query)) {
+            results.push(item);
+        }
+    });
+    
+    // Search categories
+    searchData.categories.forEach(item => {
+        if (item.name.toLowerCase().includes(query) || item.meta.toLowerCase().includes(query)) {
+            results.push(item);
+        }
+    });
+    
+    // Search papers
+    searchData.papers.forEach(item => {
+        if (item.name.toLowerCase().includes(query) || item.meta.toLowerCase().includes(query)) {
+            results.push(item);
+        }
+    });
+    
+    // Display results
+    if (results.length === 0) {
+        resultsDiv.innerHTML = '<div class="search-result-item empty">No results found</div>';
+        resultsDiv.style.display = 'block';
+        return;
+    }
+    
+    const html = results.slice(0, 20).map(item => {
+        const icon = {
+            'subject': '📚',
+            'level': '📖',
+            'category': '📁',
+            'paper': '📄'
+        }[item.type];
+        
+        const badge = item.type === 'category' ? ` <span class="badge">${item.paperCount} papers</span>` : '';
+        
+        return `
+            <a href="${item.url}" class="search-result-item">
+                <div class="search-result-icon">${icon}</div>
+                <div class="search-result-content">
+                    <div class="search-result-name">${item.name}${badge}</div>
+                    <div class="search-result-meta">${item.meta}</div>
+                </div>
+            </a>
+        `;
+    }).join('');
+    
+    resultsDiv.innerHTML = html;
+    resultsDiv.style.display = 'block';
+});
+
+// Close search results when clicking outside
+document.addEventListener('click', (e) => {
+    const searchInput = document.getElementById('global-search');
+    const resultsDiv = document.getElementById('search-results');
+    
+    if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+        resultsDiv.style.display = 'none';
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,409 @@
+{% extends "base.html" %}
+
+{% block title %}Papers - JABchem CMS{% endblock %}
+
+{% block content %}
+<div class="papers-page">
+    <div id="papers-header"></div>
+    
+    <div class="papers-controls">
+        <div class="papers-actions">
+            <button class="btn btn-primary" onclick="showAddPaperForm()">Add Paper</button>
+        </div>
+        
+        <div class="papers-filters">
+            <div class="filter-group">
+                <label>Search Year:</label>
+                <input type="text" id="year-filter" placeholder="e.g., 2025" onkeyup="filterPapers()">
+            </div>
+            
+            <div class="filter-group">
+                <label>Sort:</label>
+                <select id="sort-order" onchange="sortPapers()">
+                    <option value="desc">Newest First</option>
+                    <option value="asc">Oldest First</option>
+                    <option value="alpha">Alphabetical</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Show:</label>
+                <select id="file-filter" onchange="filterPapers()">
+                    <option value="all">All Papers</option>
+                    <option value="complete">Complete (all 3 files)</option>
+                    <option value="incomplete">Incomplete</option>
+                    <option value="no-past">Missing Past Paper</option>
+                    <option value="no-jabchem">Missing JABchem</option>
+                    <option value="no-sqa">Missing SQA</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-paper-form" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 id="form-title">Add New Paper</h2>
+            <form id="paper-form">
+                <input type="hidden" id="paper-id">
+                
+                <div class="form-group">
+                    <label>Year / Title</label>
+                    <input type="text" id="paper-year" required>
+                </div>
+                
+                <div id="standard-fields">
+                    <div class="form-group">
+                        <label>Past Paper (PDF)</label>
+                        <input type="file" id="past-paper-file" accept=".pdf">
+                        <small id="past-paper-current"></small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>JABchem Marking (PDF)</label>
+                        <input type="file" id="jabchem-file" accept=".pdf">
+                        <small id="jabchem-current"></small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>SQA Marking (PDF)</label>
+                        <input type="file" id="sqa-file" accept=".pdf">
+                        <small id="sqa-current"></small>
+                    </div>
+                </div>
+                
+                <div id="additional-fields" style="display: none;">
+                    <div class="form-group">
+                        <label>Additional Fields (JSON)</label>
+                        <textarea id="additional-json" rows="10" style="width: 100%; font-family: monospace; padding: 0.5rem;"></textarea>
+                        <small>Edit the JSON to update custom fields. Format: {"Field Name": "value"} or {"Field Name": [{"url": "/path", "link_text": "text"}]}</small>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideAddPaperForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="papers-list"></div>
+</div>
+
+<script>
+const categoryId = {{ category_id }};
+let allPapers = [];
+
+function loadPapers() {
+    fetch(`/api/papers/category/${categoryId}`)
+        .then(r => r.json())
+        .then(papers => {
+            allPapers = papers;
+            displayPapers();
+        });
+}
+
+function displayPapers() {
+    const list = document.getElementById('papers-list');
+    let papers = [...allPapers];
+    
+    // Apply filters
+    const yearFilter = document.getElementById('year-filter').value.toLowerCase();
+    const fileFilter = document.getElementById('file-filter').value;
+    
+    if (yearFilter) {
+        papers = papers.filter(p => p.year.toString().toLowerCase().includes(yearFilter));
+    }
+    
+    if (fileFilter !== 'all') {
+        papers = papers.filter(p => {
+            const hasAll = p.past_paper_path && p.jabchem_marking_path && p.sqa_marking_path;
+            const hasNone = !p.past_paper_path && !p.jabchem_marking_path && !p.sqa_marking_path && !p.additional_files;
+            
+            switch(fileFilter) {
+                case 'complete': return hasAll;
+                case 'incomplete': return !hasAll && !hasNone;
+                case 'no-past': return !p.past_paper_path;
+                case 'no-jabchem': return !p.jabchem_marking_path;
+                case 'no-sqa': return !p.sqa_marking_path;
+                default: return true;
+            }
+        });
+    }
+    
+    // Apply sort
+    const sortOrder = document.getElementById('sort-order').value;
+    papers.sort((a, b) => {
+        if (sortOrder === 'alpha') {
+            return a.year.toString().localeCompare(b.year.toString());
+        }
+        
+        const yearA = parseInt(a.year) || 0;
+        const yearB = parseInt(b.year) || 0;
+        
+        return sortOrder === 'desc' ? yearB - yearA : yearA - yearB;
+    });
+    
+    if (papers.length === 0) {
+        list.innerHTML = '<p class="empty">No papers match your filters</p>';
+        return;
+    }
+    
+    const html = papers.map(paper => {
+        // Check if this is an additional materials paper
+        let filesHtml = '';
+        let fileCount = 0;
+        
+        if (paper.additional_files) {
+            // Parse additional files JSON
+            try {
+                const additionalData = JSON.parse(paper.additional_files);
+                const fields = Object.keys(additionalData);
+                fileCount = fields.length;
+                
+                filesHtml = fields.map(field => {
+                    const value = additionalData[field];
+                    if (Array.isArray(value) && value.length > 0 && value[0].url) {
+                        return `<div class="file-item">📎 ${field}</div>`;
+                    } else if (typeof value === 'string') {
+                        return `<div class="file-item">ℹ️ ${field}: ${value}</div>`;
+                    }
+                    return '';
+                }).filter(Boolean).join('');
+            } catch (e) {
+                filesHtml = '<div class="file-item empty">Additional materials</div>';
+            }
+        } else {
+            // Standard paper format
+            fileCount = [paper.past_paper_path, paper.jabchem_marking_path, paper.sqa_marking_path].filter(Boolean).length;
+            filesHtml = `
+                ${paper.past_paper_path ? `<div class="file-item">📄 Past Paper <button class="btn-icon" onclick="deleteFile(${paper.id}, 'past_paper')">✕</button></div>` : '<div class="file-item empty">No Past Paper</div>'}
+                ${paper.jabchem_marking_path ? `<div class="file-item">✓ JABchem Marking <button class="btn-icon" onclick="deleteFile(${paper.id}, 'jabchem_marking')">✕</button></div>` : '<div class="file-item empty">No JABchem Marking</div>'}
+                ${paper.sqa_marking_path ? `<div class="file-item">✓ SQA Marking <button class="btn-icon" onclick="deleteFile(${paper.id}, 'sqa_marking')">✕</button></div>` : '<div class="file-item empty">No SQA Marking</div>'}
+            `;
+        }
+        
+        const completeClass = paper.additional_files ? 'partial' : (fileCount === 3 ? 'complete' : fileCount === 0 ? 'empty-paper' : 'partial');
+        const fileLabel = paper.additional_files ? 'fields' : 'files';
+        
+        return `
+            <div class="paper-card ${completeClass}">
+                <h3>${paper.year} <span class="file-count">(${fileCount} ${fileLabel})</span></h3>
+                <div class="paper-files">
+                    ${filesHtml}
+                </div>
+                <div class="paper-actions">
+                    <button class="btn btn-small" onclick="editPaper(${paper.id})">Edit</button>
+                    <button class="btn btn-small btn-danger" onclick="deletePaper(${paper.id})">Delete</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    list.innerHTML = html;
+}
+
+function filterPapers() {
+    displayPapers();
+}
+
+function sortPapers() {
+    displayPapers();
+}
+
+let currentPaper = null;
+
+function showAddPaperForm() {
+    currentPaper = null;
+    document.getElementById('form-title').textContent = 'Add New Paper';
+    document.getElementById('paper-id').value = '';
+    document.getElementById('paper-year').value = '';
+    document.getElementById('past-paper-current').textContent = '';
+    document.getElementById('jabchem-current').textContent = '';
+    document.getElementById('sqa-current').textContent = '';
+    document.getElementById('standard-fields').style.display = 'block';
+    document.getElementById('additional-fields').style.display = 'none';
+    document.getElementById('add-paper-form').style.display = 'flex';
+}
+
+function hideAddPaperForm() {
+    document.getElementById('add-paper-form').style.display = 'none';
+    document.getElementById('paper-form').reset();
+    currentPaper = null;
+}
+
+async function editPaper(paperId) {
+    const response = await fetch(`/api/papers/${paperId}`);
+    const paper = await response.json();
+    currentPaper = paper;
+    
+    document.getElementById('form-title').textContent = 'Edit Paper';
+    document.getElementById('paper-id').value = paper.id;
+    document.getElementById('paper-year').value = paper.year;
+    
+    // Check if this is an additional materials paper
+    if (paper.additional_files) {
+        // Show additional materials form
+        document.getElementById('standard-fields').style.display = 'none';
+        document.getElementById('additional-fields').style.display = 'block';
+        
+        try {
+            const additionalData = JSON.parse(paper.additional_files);
+            document.getElementById('additional-json').value = JSON.stringify(additionalData, null, 2);
+        } catch (e) {
+            document.getElementById('additional-json').value = paper.additional_files || '{}';
+        }
+    } else {
+        // Show standard form
+        document.getElementById('standard-fields').style.display = 'block';
+        document.getElementById('additional-fields').style.display = 'none';
+        
+        document.getElementById('past-paper-current').textContent = paper.past_paper_path ? `Current: ${paper.past_paper_path}` : '';
+        document.getElementById('jabchem-current').textContent = paper.jabchem_marking_path ? `Current: ${paper.jabchem_marking_path}` : '';
+        document.getElementById('sqa-current').textContent = paper.sqa_marking_path ? `Current: ${paper.sqa_marking_path}` : '';
+    }
+    
+    document.getElementById('add-paper-form').style.display = 'flex';
+}
+
+async function deleteFile(paperId, fileType) {
+    if (!confirm('Delete this file?')) return;
+    
+    await fetch(`/api/papers/${paperId}/file/${fileType}`, {method: 'DELETE'});
+    loadPapers();
+}
+
+document.getElementById('paper-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const paperId = document.getElementById('paper-id').value;
+    const year = document.getElementById('paper-year').value;
+    
+    // Check if this is an additional materials paper
+    const isAdditional = document.getElementById('additional-fields').style.display !== 'none';
+    
+    if (isAdditional && paperId) {
+        // Update additional materials paper
+        try {
+            const additionalJson = document.getElementById('additional-json').value;
+            const additionalData = JSON.parse(additionalJson);
+            
+            await fetch(`/api/papers/${paperId}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    year: year,
+                    category_id: categoryId,
+                    past_paper_path: currentPaper.past_paper_path,
+                    jabchem_marking_path: currentPaper.jabchem_marking_path,
+                    sqa_marking_path: currentPaper.sqa_marking_path,
+                    additional_files: JSON.stringify(additionalData)
+                })
+            });
+            
+            hideAddPaperForm();
+            loadPapers();
+        } catch (err) {
+            alert('Invalid JSON format: ' + err.message);
+        }
+        return;
+    }
+    
+    // Standard paper handling
+    const pastPaperFile = document.getElementById('past-paper-file').files[0];
+    const jabchemFile = document.getElementById('jabchem-file').files[0];
+    const sqaFile = document.getElementById('sqa-file').files[0];
+    
+    // Get category info to determine subject and level
+    const categoryInfo = await fetch(`/api/structure`).then(r => r.json());
+    let subject = '', level = '';
+    
+    for (const subj of categoryInfo) {
+        for (const lvl of subj.levels) {
+            const cat = lvl.categories.find(c => c.id === categoryId);
+            if (cat) {
+                subject = subj.slug;
+                level = lvl.slug;
+                break;
+            }
+        }
+    }
+    
+    // If editing and year changed, update the paper
+    if (paperId && currentPaper && currentPaper.year !== year) {
+        await fetch(`/api/papers/${paperId}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                year: year,
+                category_id: categoryId,
+                past_paper_path: currentPaper.past_paper_path,
+                jabchem_marking_path: currentPaper.jabchem_marking_path,
+                sqa_marking_path: currentPaper.sqa_marking_path
+            })
+        });
+    }
+    
+    // Upload files
+    const uploads = [];
+    
+    if (pastPaperFile) {
+        const formData = new FormData();
+        formData.append('file', pastPaperFile);
+        formData.append('subject', subject);
+        formData.append('level', level);
+        formData.append('year', year);
+        formData.append('type', 'past_paper');
+        formData.append('category_id', categoryId);
+        uploads.push(fetch('/api/upload', { method: 'POST', body: formData }));
+    }
+    
+    if (jabchemFile) {
+        const formData = new FormData();
+        formData.append('file', jabchemFile);
+        formData.append('subject', subject);
+        formData.append('level', level);
+        formData.append('year', year);
+        formData.append('type', 'jabchem_marking');
+        formData.append('category_id', categoryId);
+        uploads.push(fetch('/api/upload', { method: 'POST', body: formData }));
+    }
+    
+    if (sqaFile) {
+        const formData = new FormData();
+        formData.append('file', sqaFile);
+        formData.append('subject', subject);
+        formData.append('level', level);
+        formData.append('year', year);
+        formData.append('type', 'sqa_marking');
+        formData.append('category_id', categoryId);
+        uploads.push(fetch('/api/upload', { method: 'POST', body: formData }));
+    }
+    
+    if (!paperId && uploads.length === 0) {
+        alert('Please select at least one file');
+        return;
+    }
+    
+    try {
+        if (uploads.length > 0) {
+            await Promise.all(uploads);
+        }
+        hideAddPaperForm();
+        loadPapers();
+    } catch (err) {
+        alert('Error uploading files: ' + err.message);
+    }
+});
+
+function deletePaper(id) {
+    if (!confirm('Delete this paper?')) return;
+    
+    fetch(`/api/papers/${id}`, {method: 'DELETE'})
+        .then(() => loadPapers());
+}
+
+// Initialize
+loadPapers();
+</script>
+{% endblock %}

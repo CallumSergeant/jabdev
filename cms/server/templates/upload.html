@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Upload - JABchem CMS{% endblock %}
+
+{% block content %}
+<div class="upload-page">
+    <h1>Upload Papers</h1>
+    
+    <form id="upload-form" class="upload-form">
+        <div class="form-group">
+            <label>Subject</label>
+            <select id="subject" required>
+                <option value="">Select subject...</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Level</label>
+            <select id="level" required>
+                <option value="">Select level...</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Year</label>
+            <input type="text" id="year" required placeholder="e.g., 2025">
+        </div>
+        
+        <div class="form-group">
+            <label>File Type</label>
+            <select id="file-type" required>
+                <option value="">Select type...</option>
+                <option value="past_paper">Past Paper</option>
+                <option value="jabchem_marking">JABchem Marking</option>
+                <option value="sqa_marking">SQA Marking</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>PDF File</label>
+            <input type="file" id="file" accept=".pdf" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+    
+    <div id="upload-result" class="upload-result"></div>
+</div>
+
+<script>
+// Load subjects
+fetch('/api/subjects')
+    .then(r => r.json())
+    .then(subjects => {
+        const select = document.getElementById('subject');
+        subjects.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.slug;
+            opt.textContent = s.name;
+            select.appendChild(opt);
+        });
+    });
+
+// Load levels when subject changes
+document.getElementById('subject').addEventListener('change', (e) => {
+    const subjectSlug = e.target.value;
+    if (!subjectSlug) return;
+    
+    fetch('/api/subjects')
+        .then(r => r.json())
+        .then(subjects => {
+            const subject = subjects.find(s => s.slug === subjectSlug);
+            return fetch(`/api/subjects/${subject.id}`);
+        })
+        .then(r => r.json())
+        .then(subject => {
+            const select = document.getElementById('level');
+            select.innerHTML = '<option value="">Select level...</option>';
+            subject.levels.forEach(l => {
+                const opt = document.createElement('option');
+                opt.value = l.slug;
+                opt.textContent = l.name;
+                select.appendChild(opt);
+            });
+        });
+});
+
+document.getElementById('upload-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData();
+    formData.append('file', document.getElementById('file').files[0]);
+    formData.append('subject', document.getElementById('subject').value);
+    formData.append('level', document.getElementById('level').value);
+    formData.append('year', document.getElementById('year').value);
+    formData.append('type', document.getElementById('file-type').value);
+    
+    const result = document.getElementById('upload-result');
+    result.innerHTML = '<p class="loading">Uploading and generating markdown...</p>';
+    
+    fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            result.innerHTML = `<p class="success">✓ File uploaded and markdown generated!<br>PDF: ${data.path}<br>Paper ID: ${data.paper_id}</p>`;
+            document.getElementById('upload-form').reset();
+        } else {
+            result.innerHTML = `<p class="error">✗ Error: ${data.error}</p>`;
+        }
+    })
+    .catch(err => {
+        result.innerHTML = `<p class="error">✗ Error: ${err.message}</p>`;
+    });
+});
+</script>
+{% endblock %}
