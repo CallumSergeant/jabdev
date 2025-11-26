@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Preview Error - JABchem CMS{% endblock %}
+
+{% block content %}
+<div class="preview-error">
+    <h1>Preview Not Available</h1>
+    <p class="error">{{ error }}</p>
+    <p>To preview the site:</p>
+    <ol>
+        <li>Go to the <a href="/publish">Publish page</a></li>
+        <li>Click "Test Build (Local)"</li>
+        <li>Wait for the build to complete</li>
+        <li>Then return here to preview</li>
+    </ol>
+    <a href="/publish" class="btn btn-primary">Go to Publish Page</a>
+</div>
+{% endblock %}

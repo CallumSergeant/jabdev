@@ -1,9 +1,69 @@
 from flask import Blueprint, jsonify, request
+import os
 from utils.git_handler import GitHandler
 from utils.file_handler import generate_markdown_files
 
 def create_publish_blueprint(db):
     bp = Blueprint('publish', __name__, url_prefix='/api/publish')
+    
+    @bp.route('/test', methods=['POST'])
+    def test_deploy():
+        """Generate markdown files and build Jekyll site locally without pushing"""
+        import subprocess
+        try:
+            # Generate markdown files
+            paper_count = generate_markdown_files(db)
+            print(f"Generated {paper_count} markdown files")
+            
+            # Build Jekyll site
+            build_dir = os.path.abspath('..')
+            
+            # Try to find bundle in common locations
+            bundle_paths = [
+                os.path.expanduser('~/.gem/ruby/2.7.0/bin/bundle'),
+                '/usr/local/bin/bundle',
+                '/usr/bin/bundle',
+                'bundle'  # fallback to PATH
+            ]
+            
+            bundle_cmd = None
+            for path in bundle_paths:
+                if os.path.exists(path) or path == 'bundle':
+                    bundle_cmd = path
+                    break
+            
+            if not bundle_cmd:
+                return jsonify({'error': 'Bundle not found. Please install Jekyll dependencies.'}), 500
+            
+            result = subprocess.run(
+                [bundle_cmd, 'exec', 'jekyll', 'build'],
+                cwd=build_dir,
+                capture_output=True,
+                text=True,
+                timeout=60
+            )
+            
+            if result.returncode == 0:
+                return jsonify({
+                    'success': True,
+                    'message': 'Test build completed successfully',
+                    'papers_generated': paper_count,
+                    'output': result.stdout
+                })
+            else:
+                return jsonify({
+                    'success': False,
+                    'error': 'Jekyll build failed',
+                    'output': result.stderr
+                }), 500
+                
+        except subprocess.TimeoutExpired:
+            return jsonify({'error': 'Build timed out after 60 seconds'}), 500
+        except FileNotFoundError:
+            return jsonify({'error': 'Jekyll not found. Make sure bundle and jekyll are installed.'}), 500
+        except Exception as e:
+            print(f"Test deploy error: {str(e)}")
+            return jsonify({'error': str(e)}), 500
     
     @bp.route('', methods=['POST'])
     def publish_changes():

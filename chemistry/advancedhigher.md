@@ -19,21 +19,21 @@ tables:
       - heading: Year
       - heading: Past Paper
       - heading: JABchem Marking Scheme
-      - heading: SQA Marking Solutions
+      - heading: SQA Marking Scheme
   - title: SQA Past Papers - Revised AH
     id: sqapastpapersrevisedah
     cols:
       - heading: Year
       - heading: Past Paper
       - heading: JABchem Marking Scheme
-      - heading: SQA Marking Solutions
+      - heading: SQA Marking Scheme
   - title: SQA Past Papers - Old AH
     id: sqapastpapersoldah
     cols:
       - heading: Year
       - heading: Past Paper
       - heading: JABchem Marking Scheme
-      - heading: SQA Marking Solutions
+      - heading: SQA Marking Scheme
   - title: AH Course Notes & Exercises
     id: ahcoursenotesandexercises
     cols:

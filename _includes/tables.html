@@ -24,16 +24,34 @@
                 {% endif %}
             {% endfor %}
 
+            {% comment %} Collect items for this table and sort by filename (which includes year) {% endcomment %}
+            {% assign table_items = "" | split: "" %}
+            {% for item in site.downloads %}
+                {% if item.category == table.id and page.subject == item.subject and page.level == item.level %}
+                    {% assign table_items = table_items | push: item %}
+                {% endif %}
+            {% endfor %}
+            
+            {% comment %} Sort by path (filename) which naturally sorts by year, then reverse for newest first {% endcomment %}
             {% if has_year %}
-                {% assign sorted_downloads = site.downloads | sort: 'Year' | reverse %}
-            {% elsif has_hash %}
-                {% assign sorted_downloads = site.downloads | sort: '#' %}
+                {% assign sorted_items = table_items | sort: 'path' | reverse %}
             {% else %}
-                {% assign sorted_downloads = site.downloads %}
+                {% assign sorted_items = table_items | sort: 'path' %}
             {% endif %}
             
-            {% for item in sorted_downloads %}
-                {% if item.category == table.id and page.subject == item.subject and page.level == item.level %}
+            {% for item in sorted_items %}
+                {% comment %} Check if row has any actual content (not all missing) {% endcomment %}
+                {% assign has_content = false %}
+                {% for col in table.cols %}
+                    {% assign heading_key = col.heading %}
+                    {% assign heading_value = item[heading_key] %}
+                    {% if heading_value %}
+                        {% assign has_content = true %}
+                        {% break %}
+                    {% endif %}
+                {% endfor %}
+                
+                {% if has_content %}
                     <tr>
                         {% for col in table.cols %}
                             {% assign heading_key = col.heading %}
@@ -43,7 +61,7 @@
                                     {% if heading_value.first %}
                                         {% for file in heading_value %}
                                             {% if file.url and file.link_text %}
-                                                <a href="{{ file.url }}" class="link-primary" style="text-decoration: none;">{{ file.link_text }} <i class="fa-regular fa-file-pdf"></i><br/>
+                                                <a href="{{ file.url }}" class="link-primary" style="text-decoration: none;">{{ file.link_text }} <i class="fa-regular fa-file-pdf"></i></a><br/>
                                             {% endif %}
                                         {% endfor %}
                                     {% else %}

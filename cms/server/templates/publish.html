@@ -7,16 +7,20 @@
     <h1>Publish Changes</h1>
     
     <div class="publish-form">
-        <p>Generate markdown files and push to GitHub</p>
+        <p>Generate markdown files and deploy to GitHub</p>
         
         <div class="form-group">
             <label>Commit Message</label>
             <input type="text" id="commit-message" placeholder="Update from CMS" value="Update from CMS">
         </div>
         
-        <button id="publish-btn" class="btn btn-success">Publish to GitHub</button>
+        <div class="button-group">
+            <button id="test-btn" class="btn btn-secondary">Test Build (Local)</button>
+            <button id="publish-btn" class="btn btn-success">Publish to GitHub</button>
+        </div>
         
         <div id="publish-result"></div>
+        <div id="build-output"></div>
     </div>
     
     <div class="publish-history">
@@ -52,13 +56,54 @@ function loadHistory() {
         });
 }
 
+document.getElementById('test-btn').addEventListener('click', () => {
+    const result = document.getElementById('publish-result');
+    const output = document.getElementById('build-output');
+    const btn = document.getElementById('test-btn');
+    
+    btn.disabled = true;
+    result.innerHTML = '<p class="loading">Building Jekyll site locally...</p>';
+    output.innerHTML = '';
+    
+    fetch('/api/publish/test', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'}
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            result.innerHTML = `
+                <p class="success">✓ ${data.message}<br>Generated ${data.papers_generated} markdown files</p>
+                <a href="/preview" target="_blank" class="btn btn-primary" style="margin-top: 1rem;">
+                    Preview Site <i class="fa fa-external-link"></i>
+                </a>
+            `;
+            if (data.output) {
+                output.innerHTML = `<div class="build-log"><h3>Build Output:</h3><pre>${data.output}</pre></div>`;
+            }
+        } else {
+            result.innerHTML = `<p class="error">✗ Error: ${data.error}</p>`;
+            if (data.output) {
+                output.innerHTML = `<div class="build-log error"><h3>Build Errors:</h3><pre>${data.output}</pre></div>`;
+            }
+        }
+        btn.disabled = false;
+    })
+    .catch(err => {
+        result.innerHTML = `<p class="error">✗ Error: ${err.message}</p>`;
+        btn.disabled = false;
+    });
+});
+
 document.getElementById('publish-btn').addEventListener('click', () => {
     const message = document.getElementById('commit-message').value;
     const result = document.getElementById('publish-result');
+    const output = document.getElementById('build-output');
     const btn = document.getElementById('publish-btn');
     
     btn.disabled = true;
-    result.innerHTML = '<p class="loading">Publishing...</p>';
+    result.innerHTML = '<p class="loading">Publishing to GitHub...</p>';
+    output.innerHTML = '';
     
     fetch('/api/publish', {
         method: 'POST',

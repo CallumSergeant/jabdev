@@ -37,9 +37,12 @@ def generate_markdown_file_for_paper(paper_dict, subject_slug, level_slug, categ
             }]
         
         if paper_dict.get('jabchem_marking_path'):
-            frontmatter['JABchem Marking Scheme'] = [{
+            # Use JABstem for Physics, JABchem for others
+            jab_label = 'JABstem Marking Scheme' if subject_name == 'Physics' else 'JABchem Marking Scheme'
+            jab_text = 'JABstem Solutions' if subject_name == 'Physics' else 'JABchem Solutions'
+            frontmatter[jab_label] = [{
                 'url': paper_dict['jabchem_marking_path'],
-                'link_text': 'JABchem Solutions'
+                'link_text': jab_text
             }]
         
         if paper_dict.get('sqa_marking_path'):
@@ -48,8 +51,9 @@ def generate_markdown_file_for_paper(paper_dict, subject_slug, level_slug, categ
                 'link_text': 'SQA Solutions'
             }]
     
-    # Generate markdown file
-    filename = f"{paper_dict['year']}.md"
+    # Generate markdown file with unique name
+    # Use paper ID to ensure uniqueness when multiple papers have same year
+    filename = f"{paper_dict['year']}-{paper_dict['id']}.md"
     filepath = os.path.join(output_dir, filename)
     
     with open(filepath, 'w') as f:

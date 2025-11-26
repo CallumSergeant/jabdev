@@ -63,4 +63,4 @@ include:
 
 collections:
   downloads:
-    output: true
+    output: false
