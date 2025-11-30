@@ -8,8 +8,8 @@ subject: chemistry
 <p class="text-secondary">A website for revision of Scottish SQA Exams in Chemistry, Maths, Physics and Biology at National 5, Higher and Advanced Higher. Included are SQA Past Papers, Marking Schemes, Traffic Light Evaluation Summaries, SQA Question Maps and so much more.</p>
 
 <div class="h-100 p-5 mt-5 bg-light border rounded-3">
-  <h2>2025 Biology Papers! <span class="badge bg-primary">New!</span></h2>
-  <p>Some of the 2025 biology exam papers are now available to download from JABchem. We will upload more when we get them!</p>
+  <h2>2025 Papers! <span class="badge bg-primary">New!</span></h2>
+  <p>2025 exam papers are now all available to download from JABchem.</p>
 </div>
 
 <div class="col-12">

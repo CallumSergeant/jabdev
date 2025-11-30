@@ -14,9 +14,9 @@ subject: Physics
 #There should be an entry here for each column in the table you wish to populate:
 Level of Study: H
 Data Book:
-    - url: /physics/additional/datasheets/HphysicsSQAdatasheet.pdf
+    - url: "/physics/additional/datasheets/newHphysicsDataSheet2025.pdf"
       link_text: H Data Book
 Relationship Book:
-    - url: /physics/additional/datasheets/HphysicsSQArelationshipsheet.pdf
+    - url: "/physics/additional/datasheets/newHphysicsRelationshipsSheet2025.pdf"
       link_text: H Relationship Book
 ---

@@ -14,9 +14,9 @@ subject: Physics
 #There should be an entry here for each column in the table you wish to populate:
 Level of Study: AH
 Data Book:
-    - url: /physics/additional/datasheets/AHphysicsSQAdatasheet.pdf
+    - url: "/physics/additional/datasheets/newAHphysicsDataSheet2025.pdf"
       link_text: AH Data Book
 Relationship Book:
-    - url: /physics/additional/datasheets/AHphysicsSQArelationshipsheet.pdf
+    - url: "/physics/additional/datasheets/newAHphysicsRelationshipsSheet2025.pdf"
       link_text: AH Relationship Book
 ---
