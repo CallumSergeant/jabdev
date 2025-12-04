@@ -12,9 +12,9 @@ category: n5selfevaluation
 subject: Chemistry
 
 #There should be an entry here for each column in the table you wish to populate:
-'#': 2
-File: Question Bank - N5 Only
+'#': 3
+File: Question Bank - N5 + Int 2
 Link:
-  - url: "/chemistry/national5/Nat5 Self Evaluation/Nat5QuestionBanksNat5onlySep25.pdf"
+  - url: "/chemistry/national5/Nat5 Self Evaluation/Nat5QuestionBanksN5Int2Sep25.pdf"
     link_text: Question Bank
 ---
